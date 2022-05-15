@@ -16,6 +16,8 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 
 var dbUrl = process.env.MONGOURI
+var port = process.env.PORT || 5000
+
 
 const options = {
     useUnifiedTopology: true,
@@ -27,22 +29,24 @@ var Message = mongoose.model('Message', {
     message: String
 })
 
-var messages = [
-    { name: "John", message: "Hello" },
-    { name: "Jane", message: "Hi" } 
-]
+// var messages = [
+//     { name: "John", message: "Hello" },
+//     { name: "Jane", message: "Hi" } 
+// ]
  
 app.get('/messages', (req, res) => {
-    res.send(messages);
+    Message.find({}, (err, messages) => {
+        res.send(messages)
+    })
 })
-
+ 
 app.post('/messages', (req, res) => {
     var message = new Message(req.body)
     message.save((err) => {
         if (err) 
                 sendStatus(500, 'Internal server error');
 
-                messages.push(req.body) 
+                // messages.push(req.body) 
                 // notifying  users
                 io.emit('message', req.body);
                 res.sendStatus(200);
@@ -68,10 +72,10 @@ config();
 
 const connectDB = async () => {
 	try { 
-		await mongoose.connect(process.env.MONGOURI, options);
+		await mongoose.connect(process.env.MONGOURI || 5000, options);
 		console.log('MongoDB Connected');
 	} catch (err) {
-		console.error(err.message);
+		console.error(err.message); 
 		// Exit process with failure
 		process.exit(1);
 	}
@@ -79,7 +83,7 @@ const connectDB = async () => {
 
 connectDB();
 
-var server = http.listen(3010, () => {
-    console.log('Listening on port', server.address().port);
+var server = http.listen(process.env.PORT, () => {
+    console.log('Listening on port', port);
 
 }); 

@@ -52,10 +52,10 @@
         })
 
         // adding a socket.on
-        socket.on('message', addMessages)
+        socket.on('message', addMessage)
 
         // function to allow us add messages
-        function addMessages(message){
+        function addMessage(message){
 
             $("#messages").append(`<h4> ${message.name} </h4> <p> ${message.message} </p>`)
 
@@ -64,7 +64,7 @@
         function getMessages(){
 
             $.get('http://localhost:3010/messages', (data) => {
-                data.forEach(addMessages); 
+                data.forEach(addMessage); 
             })
 
         }
