@@ -63,19 +63,15 @@
 
         function getMessages(){
 
-            $.get(`${process.env.HEROKULINK}/messages`, (data) => {
+            $.get('https://mighty-cove-76170.herokuapp.com/messages', (data) => {
                 data.forEach(addMessage); 
             })
-            // $.get('http://localhost:3010/messages', (data) => {
-            //     data.forEach(addMessage); 
-            // })
 
         }
  
         function postMessage(message){
 
-            $.post(`${process.env.HEROKULINK}/messages`, message)
-            // $.post('http://localhost:3010/messages', message)
+            $.post('https://mighty-cove-76170.herokuapp.com/messages', message)
 
         }
 
